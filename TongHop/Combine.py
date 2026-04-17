@@ -77,13 +77,15 @@ for name, model in models.items():
     r2_list.append(r2)
     model_names.append(name)
 
+    print()
     print(f"{name}: MAE={mae:.4f}, MSE={mse:.4f}, RMSE={rmse:.4f}, R2={r2:.4f}")
+    print()
 
 # VẼ BIỂU ĐỒ
 plt.figure(figsize=(14, 10))
 
 # Định nghĩa 3 màu tương ứng cho 3 mô hình (KNN, Decision Tree, Linear Regression)
-colors = ['#3498db', '#2ecc71', '#e74c3c'] 
+colors = ['#3498db', '#2ecc71', '#e74c3c']
 
 # MAE
 plt.subplot(2, 2, 1)
