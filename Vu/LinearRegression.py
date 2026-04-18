@@ -24,7 +24,7 @@ Y = energydata["Appliances"]
 
 # Phân chia tập dữ liệu theo nghi thức hold-out 2/3 1/3
 X_train, X_test, Y_train, Y_test = train_test_split(
-    X, Y, test_size=1/3, random_state=42, shuffle=True)
+    X, Y, test_size=1/3, random_state=42, shuffle=False)
 
 # Hiển thị dữ liệu trực quan
 print(energydata.head())
