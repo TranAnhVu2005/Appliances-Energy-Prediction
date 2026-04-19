@@ -13,7 +13,6 @@ df['date'] = pd.to_datetime(df['date'])
 df['Hour'] = df['date'].dt.hour
 df['DayOfWeek'] = df['date'].dt.dayofweek
 
-feature_names = df.drop(["Appliances", "date", "rv1", "rv2"], axis=1).columns
 X = df.drop(["Appliances", "date", "rv1", "rv2"], axis=1).values
 y = df["Appliances"].values
 
@@ -35,10 +34,11 @@ for depth in max_depth_list:
         max_depth=depth,
         min_samples_split=2,
         min_samples_leaf=1,
+        random_state=42
     )
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
-    mae_depth.append(np.sqrt(mean_absolute_error(y_test, y_pred)))
+    mae_depth.append((mean_absolute_error(y_test, y_pred)))
 
 # Giải thích: np.argmin trả ra vị trí (index) của mae thấp nhất trong mảng
 best_depth = max_depth_list[np.argmin(mae_depth)]
@@ -53,10 +53,11 @@ for split in split_list:
         max_depth=None,
         min_samples_split=split,
         min_samples_leaf=1,
+        random_state=42
     )
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
-    mae_split.append(np.sqrt(mean_absolute_error(y_test, y_pred)))
+    mae_split.append((mean_absolute_error(y_test, y_pred)))
 
 best_split = split_list[np.argmin(mae_split)]
 
@@ -70,10 +71,11 @@ for leaf in leaf_list:
         max_depth=None,
         min_samples_split=2,
         min_samples_leaf=leaf,
+        random_state=42
     )
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
-    mae_leaf.append(np.sqrt(mean_absolute_error(y_test, y_pred)))
+    mae_leaf.append((mean_absolute_error(y_test, y_pred)))
 
 best_leaf = leaf_list[np.argmin(mae_leaf)]
 
@@ -84,6 +86,7 @@ best_tree = DecisionTreeRegressor(
     max_depth=best_depth,
     min_samples_split=best_split,
     min_samples_leaf=best_leaf,
+    random_state=42
 )
 best_tree.fit(X_train, y_train)
 y_pred_best = best_tree.predict(X_test)
