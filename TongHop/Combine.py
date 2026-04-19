@@ -35,10 +35,10 @@ X_test_scaled = scaler.transform(X_test)
 
 # Khai báo model
 models = {
-    "KNN": KNeighborsRegressor(n_neighbors=21),
+    "KNN": KNeighborsRegressor(n_neighbors=11),
     "Decision Tree": DecisionTreeRegressor(
         criterion='squared_error',
-        max_depth=15,
+        max_depth=5,
         min_samples_split=40,
         min_samples_leaf=21,
         random_state=42
