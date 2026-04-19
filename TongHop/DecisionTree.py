@@ -6,10 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor, plot_tree
 from sklearn.metrics import mean_absolute_error
 
-# ==========================================
 # 1. Load và tiền xử lý dữ liệu
-# ==========================================
-print("Loading data...")
 df = pd.read_csv(
     "D:/All/Information Technology  - CTU/CurrentSemester/CT294 - Applied machine learning/MayHocUngDung_TeamWork/Appliances-Energy-Prediction/appliances+energy+prediction/energydata_complete.csv", sep=",")
 df['date'] = pd.to_datetime(df['date'])
@@ -20,16 +17,12 @@ feature_names = df.drop(["Appliances", "date", "rv1", "rv2"], axis=1).columns
 X = df.drop(["Appliances", "date", "rv1", "rv2"], axis=1).values
 y = df["Appliances"].values
 
-# ==========================================
 # 2. Phân tách tập dữ liệu (Hold-out)
-# ==========================================
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, shuffle=False
 )
 
-# ==========================================
 # 3. Tinh chỉnh siêu tham số và huấn luyện
-# ==========================================
 
 # Khảo sát max_depth
 max_depth_list = [5, 10, 15, 20]
@@ -37,6 +30,7 @@ mae_depth = []
 
 for depth in max_depth_list:
     model = DecisionTreeRegressor(
+        # Cắt sao tổng độ lệch chuẩn là nhỏ nhất so với độ lệch chuẩn ban đầu
         criterion='squared_error',
         max_depth=depth,
         min_samples_split=2,
@@ -46,8 +40,7 @@ for depth in max_depth_list:
     y_pred = model.predict(X_test)
     mae_depth.append(np.sqrt(mean_absolute_error(y_test, y_pred)))
 
-# [SỬA ĐỔI/THÊM]: Tự động lấy cấu hình max_depth tốt nhất (có error thấp nhất)
-# Giải thích: np.argmin trả ra vị trí (index) của RMSE thấp nhất trong mảng đồ thị vòng lặp
+# Giải thích: np.argmin trả ra vị trí (index) của mae thấp nhất trong mảng
 best_depth = max_depth_list[np.argmin(mae_depth)]
 
 # Khảo sát min_samples_split
@@ -65,7 +58,6 @@ for split in split_list:
     y_pred = model.predict(X_test)
     mae_split.append(np.sqrt(mean_absolute_error(y_test, y_pred)))
 
-# [SỬA ĐỔI/THÊM]: Tự động lấy cấu hình min_samples_split tốt nhất
 best_split = split_list[np.argmin(mae_split)]
 
 # Khảo sát min_samples_leaf
@@ -83,15 +75,9 @@ for leaf in leaf_list:
     y_pred = model.predict(X_test)
     mae_leaf.append(np.sqrt(mean_absolute_error(y_test, y_pred)))
 
-# [SỬA ĐỔI/THÊM]: Tự động lấy cấu hình min_samples_leaf tốt nhất
 best_leaf = leaf_list[np.argmin(mae_leaf)]
 
-# ==========================================
 # 4. Huấn luyện mô hình tối ưu nhất
-# ==========================================
-# [SỬA ĐỔI/THÊM]: Sinh ra block báo lỗi tổng quan cuối cùng dựa vào các thông số tốt nhất vừa dò
-# Giải thích: Sau giai đoạn thử (Tuning), Cây quyết định phải được gắn tất tật tham số tối ưu
-# (`best_depth`, `best_split`, `best_leaf`) vào train 1 lần chót nhằm trả số liệu báo cáo cho bạn vẽ R-Squared (R2).
 print("\n=== KẾT QUẢ ĐÁNH GIÁ MÔ HÌNH DECISION TREE TỐI ƯU ===")
 best_tree = DecisionTreeRegressor(
     criterion='squared_error',
@@ -113,12 +99,10 @@ print(f"\nMetrics với tham số tối ưu:")
 print(f" - MAE : {opt_mae:.4f}")
 
 
-# ==========================================
 # 5. Vẽ biểu đồ các quá trình Tuning
-# ==========================================
-plt.figure(figsize=(15, 5))
+plt.figure(figsize=(15, 5))  # Chiều rộng, chiều cao
 
-# [SỬA ĐỔI]: Tạo bố cục biểu đồ ngang (1 hàng 3 cột)
+# Tạo bố cục biểu đồ ngang (1 hàng 3 cột)
 # Biểu đồ 1: max_depth
 plt.subplot(1, 3, 1)
 plt.plot(max_depth_list, mae_depth, marker='o', color='b')

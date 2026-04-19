@@ -44,6 +44,7 @@ for k in k_values:
     mae = mean_absolute_error(y_test, y_pred)
     results.append((k, mae))
 
+
 # In kết quả
 for k, mae in results:
     print(f"k = {k}, MAE = {mae}")
