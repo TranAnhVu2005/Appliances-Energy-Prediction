@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -8,8 +7,7 @@ from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
 
 # Load dữ liệu
-df = pd.read_csv(
-    "D:/All/Information Technology  - CTU/CurrentSemester/CT294 - Applied machine learning/MayHocUngDung_TeamWork/Appliances-Energy-Prediction/appliances+energy+prediction/energydata_complete.csv", sep=",")
+df = pd.read_csv("D:/MHUD_TeamWork/appliances+energy+prediction/energydata_complete.csv", sep=",")
 df['date'] = pd.to_datetime(df['date'])
 df['Hour'] = df['date'].dt.hour
 df['DayOfWeek'] = df['date'].dt.dayofweek
@@ -18,7 +16,6 @@ df['DayOfWeek'] = df['date'].dt.dayofweek
 # Tiền xử lý
 X = df.drop(["Appliances", "date", "rv1",
              "rv2"], axis=1).values
-
 
 y = df["Appliances"].values
 # Train/Test split

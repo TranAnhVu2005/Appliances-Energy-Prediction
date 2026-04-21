@@ -1,15 +1,16 @@
-from pandas import read_csv
 import pandas as pd
+import math
+import matplotlib.pyplot as plt
+
+from pandas import read_csv
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.linear_model import LinearRegression
-import math
-import matplotlib.pyplot as plt
-import numpy as np
 
 
-energydata = read_csv("D:/All/Information Technology  - CTU/CurrentSemester/CT294 - Applied machine learning/MayHocUngDung_TeamWork/Appliances-Energy-Prediction/appliances+energy+prediction/energydata_complete.csv", delimiter=",")
+
+energydata = read_csv("D:/MHUD_TeamWork/appliances+energy+prediction/energydata_complete.csv", sep=",")
 energydata['date'] = pd.to_datetime(energydata['date'])
 energydata['Hour'] = energydata['date'].dt.hour
 energydata['DayOfWeek'] = energydata['date'].dt.dayofweek
@@ -17,14 +18,12 @@ energydata['DayOfWeek'] = energydata['date'].dt.dayofweek
 # Tách đặc trưng
 X = energydata.drop(["Appliances", "date", "rv1",
                     "rv2"], axis=1)
-# X = energydata.drop(["Appliances", "date", "Unnamed: 29"], axis=1)
 Y = energydata["Appliances"]
-# print(X)
 
 
-# Phân chia tập dữ liệu theo nghi thức hold-out 2/3 1/3
+# Phân chia tập dữ liệu theo nghi thức hold-out
 X_train, X_test, Y_train, Y_test = train_test_split(
-    X, Y, test_size=1/3, shuffle=False)
+    X, Y, test_size=0.2, shuffle=False)
 
 # Vẽ biểu đồ phân tán
 plt.scatter(energydata.RH_1, energydata.Appliances)
@@ -40,8 +39,8 @@ model = LinearRegression()
 model.fit(X_train_scaler, Y_train)
 Y_pred = model.predict(X_test_scaler)
 
-print("Các thuộc tính:", X_train.columns.values)
-print("Hệ số của các thuộc tính:", model.coef_)
+print("Cac thuoc tinh:", X_train.columns.values)
+print("He so cua cac thuoc tinh:", model.coef_)
 print("Bias (intercept):", model.intercept_)
 
 # Tính MAE
@@ -57,7 +56,7 @@ rmse = math.sqrt(mse)
 r2 = r2_score(Y_test, Y_pred)
 
 print("="*100)
-print("Độ chính xác theo các phương pháp đánh giá hiệu quả giải thuật học của bài toán hồi quy:")
+print("Do chinh xac theo cac phuong phap đanh gia hieu qua giai thuat hoc cua bai toan hoi quy:")
 print("="*100)
 print("MAE:", mae)
 print("R2:", r2)

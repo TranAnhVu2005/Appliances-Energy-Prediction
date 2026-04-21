@@ -10,8 +10,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 # Load dữ liệu
-df = pd.read_csv(
-    "D:/All/Information Technology  - CTU/CurrentSemester/CT294 - Applied machine learning/MayHocUngDung_TeamWork/Appliances-Energy-Prediction/appliances+energy+prediction/energydata_complete.csv", sep=",")
+df = pd.read_csv("D:/MHUD_TeamWork/appliances+energy+prediction/energydata_complete.csv", sep=",")
 df['date'] = pd.to_datetime(df['date'])
 df['Hour'] = df['date'].dt.hour
 df['DayOfWeek'] = df['date'].dt.dayofweek
@@ -35,10 +34,10 @@ X_test_scaled = scaler.transform(X_test)
 
 # Khai báo model
 models = {
-    "KNN": KNeighborsRegressor(n_neighbors=21),
+    "KNN": KNeighborsRegressor(n_neighbors=11),
     "Decision Tree": DecisionTreeRegressor(
         criterion='squared_error',
-        max_depth=15,
+        max_depth=5,
         min_samples_split=40,
         min_samples_leaf=21,
         random_state=42

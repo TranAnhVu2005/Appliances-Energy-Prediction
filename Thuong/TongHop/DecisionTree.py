@@ -3,12 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor, plot_tree
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_absolute_error
 
 # 1. Load và tiền xử lý dữ liệu
-df = pd.read_csv(
-    "D:/All/Information Technology  - CTU/CurrentSemester/CT294 - Applied machine learning/MayHocUngDung_TeamWork/Appliances-Energy-Prediction/appliances+energy+prediction/energydata_complete.csv", sep=",")
+df = pd.read_csv("D:/MHUD_TeamWork/appliances+energy+prediction/energydata_complete.csv", sep=",")
 df['date'] = pd.to_datetime(df['date'])
 df['Hour'] = df['date'].dt.hour
 df['DayOfWeek'] = df['date'].dt.dayofweek
@@ -80,7 +79,7 @@ for leaf in leaf_list:
 best_leaf = leaf_list[np.argmin(mae_leaf)]
 
 # 4. Huấn luyện mô hình tối ưu nhất
-print("\n=== KẾT QUẢ ĐÁNH GIÁ MÔ HÌNH DECISION TREE TỐI ƯU ===")
+print("\n=== KET QUA DANH GIA MO HINH DECISION TREE TOI UU ===")
 best_tree = DecisionTreeRegressor(
     criterion='squared_error',
     max_depth=best_depth,
@@ -98,7 +97,7 @@ print(f"Optimal Parameters: ")
 print(f" - max_depth: {best_depth}")
 print(f" - min_samples_split: {best_split}")
 print(f" - min_samples_leaf: {best_leaf}")
-print(f"\nMetrics với tham số tối ưu:")
+print(f"\nMetrics voi tham so toi uu:")
 print(f" - MAE : {opt_mae:.4f}")
 
 
